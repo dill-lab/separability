@@ -10,7 +10,7 @@ Human evaluation of generated language through pairwise preference judgments is 
 
 ## How to Compute Separability
 Suppose you have two models, A and B, and you want to compute the separability of a test set with respect to this model pair.
-1. Install the requirements using `pip install -r requirements.txt`
+1. Install the requirements using `pip install -r requirements.txt` (In addition, run `python -m spacy download en_core_web_lg` to download the spaCy model)
 2. For a specific test set, ensure model generations are contained in JSONL files with the following format:
 ```json
 [
