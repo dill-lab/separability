@@ -52,9 +52,9 @@ if __name__ == "__main__":
     for metric in metrics:
         print(f"Calculating {metric} self-alignment for {args.modelA_name}")
         for idx, (summ_set_1, summ_set_2) in tqdm(enumerate(zip(generations1, generations1))):
-            score_matrix = np.zeros((args.k_samples, args.k_samples))
-            for j1, cand1 in enumerate(summ_set_1[args.gen_type][:args.k_samples]):
-                for j2, cand2 in enumerate(summ_set_2[args.gen_type][:args.k_samples]):
+            score_matrix = np.zeros((args.num_samples, args.num_samples))
+            for j1, cand1 in enumerate(summ_set_1[args.gen_type][:args.num_samples]):
+                for j2, cand2 in enumerate(summ_set_2[args.gen_type][:args.num_samples]):
                     if j1 < j2:
                         score = get_score(metric, cand1, cand2)
                         score_matrix[j1][j2] = score_matrix[j2][j1] = score
@@ -66,9 +66,9 @@ if __name__ == "__main__":
     for metric in metrics:
         print(f"Calculating {metric} self-alignment for {args.modelB_name}")
         for idx, (summ_set_1, summ_set_2) in tqdm(enumerate(zip(generations2, generations2))):
-            score_matrix = np.zeros((args.k_samples, args.k_samples))
-            for j1, cand1 in enumerate(summ_set_1[args.gen_type][:args.k_samples]):
-                for j2, cand2 in enumerate(summ_set_2[args.gen_type][:args.k_samples]):
+            score_matrix = np.zeros((args.num_samples, args.num_samples))
+            for j1, cand1 in enumerate(summ_set_1[args.gen_type][:args.num_samples]):
+                for j2, cand2 in enumerate(summ_set_2[args.gen_type][:args.num_samples]):
                     if j1 < j2:
                         score = get_score(metric, cand1, cand2)
                         score_matrix[j1][j2] = score_matrix[j2][j1] = score
@@ -79,9 +79,9 @@ if __name__ == "__main__":
     for metric in metrics:
         print(f"Calculating {metric} cross-alignment for {args.modelA_name} and {args.modelB_name}")
         for idx, (summ_set_1, summ_set_2) in tqdm(enumerate(zip(generations1, generations2))):
-            score_matrix = np.zeros((args.k_samples, args.k_samples))
-            for j1, cand1 in enumerate(summ_set_1[args.gen_type][:args.k_samples]):
-                for j2, cand2 in enumerate(summ_set_2[args.gen_type][:args.k_samples]):
+            score_matrix = np.zeros((args.num_samples, args.num_samples))
+            for j1, cand1 in enumerate(summ_set_1[args.gen_type][:args.num_samples]):
+                for j2, cand2 in enumerate(summ_set_2[args.gen_type][:args.num_samples]):
                     if j1 <= j2:
                         score = get_score(metric, cand1, cand2)
                         score_matrix[j1][j2] = score_matrix[j2][j1] = score
@@ -120,4 +120,4 @@ if __name__ == "__main__":
 
         test_df.drop(columns=["normalized_self1", "normalized_self2", "normalized_cross"], inplace=True)
 
-    test_df.to_csv(args.output_file)
+    test_df.to_csv(args.out_file)
