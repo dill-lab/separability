@@ -22,7 +22,7 @@ if __name__ == "__main__":
     parser.add_argument("--modelB_gen_file", required=True, type=str, help="Path to the generation file of model B")
     parser.add_argument("--gen_type", type=str, default="summaries",
                         help="Type of generation to consider in the generation file")
-    parser.add_argument("--src_column", type=str, default="article", help="Name of the source column in the test file")
+    parser.add_argument("--src_column", type=str, default="article", help="Name of the source text column in the test file")
     parser.add_argument("--num_samples", type=int, default=5,
                         help="Number of samples to consider for alignment calculations")
     parser.add_argument("--metrics", type=str,
@@ -44,9 +44,9 @@ if __name__ == "__main__":
     sources = test_df[args.src_column].tolist()
 
     for metric in metrics:
-        test_df[f"mean_{metric}_cross_alignment"] = 0
-        test_df[f"mean_{metric}_self_alignment_{args.modelA_name}"] = 0
-        test_df[f"mean_{metric}_self_alignment_{args.modelB_name}"] = 0
+        test_df[f"mean_{metric}_cross_alignment"] = 0.0
+        test_df[f"mean_{metric}_self_alignment_{args.modelA_name}"] = 0.0
+        test_df[f"mean_{metric}_self_alignment_{args.modelB_name}"] = 0.0
 
     # self-alignment args.modelA_name
     for metric in metrics:
@@ -60,7 +60,7 @@ if __name__ == "__main__":
                         score_matrix[j1][j2] = score_matrix[j2][j1] = score
 
             np.fill_diagonal(score_matrix, np.nan)
-            test_df[f"mean_{metric}_self_alignment_{args.modelA_name}"].iloc[idx] = np.nanmean(score_matrix)
+            test_df.loc[idx, f"mean_{metric}_self_alignment_{args.modelA_name}"] = np.nanmean(score_matrix)
 
     # self-alignment args.modelB_name
     for metric in metrics:
@@ -74,7 +74,7 @@ if __name__ == "__main__":
                         score_matrix[j1][j2] = score_matrix[j2][j1] = score
 
             np.fill_diagonal(score_matrix, np.nan)
-            test_df[f"mean_{metric}_self_alignment_{args.modelB_name}"].iloc[idx] = np.nanmean(score_matrix)
+            test_df.loc[idx, f"mean_{metric}_self_alignment_{args.modelB_name}"] = np.nanmean(score_matrix)
 
     for metric in metrics:
         print(f"Calculating {metric} cross-alignment for {args.modelA_name} and {args.modelB_name}")
@@ -86,7 +86,7 @@ if __name__ == "__main__":
                         score = get_score(metric, cand1, cand2)
                         score_matrix[j1][j2] = score_matrix[j2][j1] = score
 
-            test_df[f"mean_{metric}_cross_alignment"].iloc[idx] = np.mean(score_matrix)
+            test_df.loc[idx, f"mean_{metric}_cross_alignment"] = np.mean(score_matrix)
 
     for metric in metrics:
         test_df[f"{metric}_separability"] = test_df.apply(

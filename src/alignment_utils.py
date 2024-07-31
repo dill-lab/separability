@@ -57,10 +57,9 @@ def calc_bertscore_length(gen_a: str, gen_b: str) -> float:
     ref, cand = (gen_a, gen_b) if len(gen_a) > len(gen_b) else (gen_b, gen_a)
     try:
         length_pen = np.exp(1 - len(word_tokenize(ref)) / len(word_tokenize(cand)))
+        return length_pen * calc_bertscore(gen_a, gen_b)
     except ZeroDivisionError:
         print(f"{gen_a} \n {gen_b}")
-
-    return length_pen * calc_bertscore(gen_a, gen_b)
 
 
 def calc_rouge(gen_a: str, gen_b: str) -> float:
