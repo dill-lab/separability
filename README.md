@@ -37,8 +37,8 @@ The test set itself must be in csv format (only one column including the source 
 
 3. Run a command of the following example to compute the separability of the test set:
 ```bash
-python compute_separability.py \
---input_file <path_to_input_file> \
+python calc_separability.py \
+--test_file <path_to_test_file> \
 --modelA_gen_file <path_to_modelA_gen_file> \
 --modelB_gen_file <path_to_modelB_gen_file> \
 --modelA_name <modelA_name> \
@@ -47,9 +47,10 @@ python compute_separability.py \
 --src_column "article" \
 --num_samples 5 \
 --metrics "bertscore_length,rouge_1" \
---output_file <path_to_output_file> 
+--out_file <path_to_output_file> 
 ```
 
+The --test_file argument should be the path to a csv file containing the test instances (with one column including the source text).
 The current supported metrics are: BERTScore and length-adjusted BERTScore ("bertscore,bertscore_length")
 ROUGE-1-F1 ("rouge_1"), entity similarity ("entity_sim"), BLEU ("bleu"), and cosine similarity ("cosine_sim")
 
